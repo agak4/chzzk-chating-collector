@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="치지직 스트리머 채팅 수집기" />
+    <title>Chat Trace</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Chat Trace 홈">
+        <span class="brand-mark">CT</span>
+        <span>Chat Trace</span>
+      </a>
+      <div class="connection-state" id="connection-state">서버를 설정하세요</div>
+      <button class="button button-plain" id="settings-button" type="button">서버 설정</button>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <section class="sidebar-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">COLLECT</p>
+              <h2>수집 대상</h2>
+            </div>
+            <span class="count" id="target-count">0</span>
+          </div>
+          <div class="entity-list" id="target-list"></div>
+          <form class="add-form" id="target-form">
+            <label for="target-source">치지직 채널 URL 또는 ID</label>
+            <div class="input-action">
+              <input id="target-source" name="source" autocomplete="off" placeholder="https://chzzk.naver.com/live/..." required />
+              <button class="button" type="submit">추가</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="sidebar-section rooms-section">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">WATCH</p>
+              <h2>조회 채팅방</h2>
+            </div>
+            <span class="count" id="room-count">0</span>
+          </div>
+          <div class="entity-list" id="room-list"></div>
+          <form class="add-form" id="room-form">
+            <label for="room-source">치지직 채널 URL 또는 ID</label>
+            <div class="input-action">
+              <input id="room-source" name="source" autocomplete="off" placeholder="https://chzzk.naver.com/live/..." required />
+              <button class="button" type="submit">추가</button>
+            </div>
+          </form>
+        </section>
+      </aside>
+
+      <section class="content">
+        <div class="content-header">
+          <div>
+            <p class="eyebrow">CHAT ARCHIVE</p>
+            <h1>수집된 채팅</h1>
+            <p class="helper">조회 채팅방을 1분마다 확인해 수집 대상이 남긴 일반 채팅만 기록합니다.</p>
+          </div>
+          <button class="button button-plain" id="collect-button" type="button">지금 조회</button>
+        </div>
+
+        <div class="filters">
+          <label>수집 대상<select id="target-filter"><option value="">전체</option></select></label>
+          <label>조회 채팅방<select id="room-filter"><option value="">전체</option></select></label>
+          <label class="search-field">내용 검색<input id="search-input" type="search" placeholder="채팅 내용" /></label>
+        </div>
+
+        <div class="message-list" id="message-list" aria-live="polite">
+          <div class="empty-state"><strong>표시할 기록이 없습니다.</strong><span>서버를 설정하고 수집 대상과 조회 채팅방을 추가하세요.</span></div>
+        </div>
+        <button class="load-more" id="load-more" type="button" hidden>이전 기록 더 보기</button>
+      </section>
+    </main>
+
+    <dialog id="settings-dialog">
+      <form id="settings-form" method="dialog">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">CONNECTION</p><h2>서버 설정</h2></div>
+          <button class="icon-button" value="cancel" aria-label="닫기" type="submit">×</button>
+        </div>
+        <label for="api-base">수집 서버 URL</label>
+        <input id="api-base" name="apiBase" type="url" placeholder="https://collector.example.com" required />
+        <label for="admin-key">관리자 키</label>
+        <input id="admin-key" name="adminKey" type="password" autocomplete="off" required />
+        <p class="dialog-note">키는 이 브라우저의 localStorage에만 저장됩니다.</p>
+        <div class="dialog-actions">
+          <button class="button button-plain" value="cancel" type="submit">취소</button>
+          <button class="button" value="default" type="submit">저장</button>
+        </div>
+      </form>
+    </dialog>
+    <template id="entity-template">
+      <article class="entity">
+        <img class="avatar" alt="" />
+        <span class="avatar-fallback" hidden></span>
+        <span class="entity-name"></span>
+        <button class="remove-button" type="button">삭제</button>
+      </article>
+    </template>
+    <template id="message-template">
+      <article class="message">
+        <div class="message-meta"><span class="target-name"></span><span class="meta-separator">in</span><span class="room-name"></span><time></time></div>
+        <p class="message-content"></p>
+      </article>
+    </template>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
